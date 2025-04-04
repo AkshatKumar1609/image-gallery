@@ -4,24 +4,25 @@ import './App.css';
 function App() {
   const API_URL = 'https://api.unsplash.com/search/photos';
   const IMAGES_PER_PAGE = 30;
-  const API_KEY = 'j6s69QIDBlmnr56riJN84ucjl1GNDOfv4GHurd8bJk0';
 
   let [search,setSearch] = useState('')
   let [imageData,setImageData] = useState([])
   let [page,setPage] = useState(1)
   let [totalPages,setTotalPages] = useState(0)
 
-  function fetchData(event){
-    fetch( `${API_URL}?query=${search}&page=${page}&per_page=${IMAGES_PER_PAGE}&client_id=${API_KEY}`)
+  function fetchData(){
+    fetch( `${API_URL}?query=${search}&page=${page}&per_page=${IMAGES_PER_PAGE}&client_id=${process.env.REACT_APP_API_KEY}`)
     .then((res)=>res.json())
     .then((finalRes)=>{
       setImageData(finalRes.results)
-      console.log(finalRes)
       setTotalPages(finalRes.total_pages)
     })
   }
 
   function functionToFetch(event){
+    setImageData([])
+    setTotalPages(0)
+    setPage(1)
     event.preventDefault();
     fetchData()
   }
@@ -51,7 +52,7 @@ function App() {
         }
       </div>
       :
-      ''
+      "No"
       }
       <div>
         {page > 1 && <button onClick={() => setPage(page-1)}>p</button>}
