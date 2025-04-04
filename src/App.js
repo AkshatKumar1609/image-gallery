@@ -34,32 +34,61 @@ function App() {
   },[page])
 
   return (
-    <>
-      <h1>Image Gallery</h1>
-      <form onSubmit={(event)=>functionToFetch(event)}>
-        <input type='text' value={search} onChange={(event)=>setSearch(event.target.value)}/>
-        <button type='submit'>Search</button>
-      </form>
-      {
-        (imageData)?
-        <div>
-        {
-          imageData.map((v,i)=>{
-            return(
-              <img src={v.urls.full} style={{height:`100px`}} alt={v.alt_description} key={i}/>
-            )
-          })
-        }
-      </div>
-      :
-      "No"
-      }
-      <div>
-        {page > 1 && <button onClick={() => setPage(page-1)}>p</button>}
-        {page < totalPages && <button onClick={() => setPage(page+1)}>n</button>}
-      </div>
-    </>
+    <div className="container">
+      <header className="header">
+        <h1>Image Search</h1>
+        <form onSubmit={functionToFetch} className="search-box">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search images..."
+            className="search-input"
+          />
+          <button type="submit" className="search-button">
+            Search
+          </button>
+        </form>
+      </header>
+
+      {imageData.length > 0 ? (
+        <>
+          <div className="image-grid">
+            {imageData.map((v, i) => (
+              <div className="image-item" key={i}>
+                <img 
+                  src={v.urls.regular} 
+                  alt={v.alt_description || 'Unsplash image'}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="pagination">
+            <button
+              className="pagination-button"
+              onClick={() => setPage(page - 1)}
+              disabled={page <= 1}
+            >
+              Previous
+            </button>
+            <button
+              className="pagination-button"
+              onClick={() => setPage(page + 1)}
+              disabled={page >= totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="no-results">
+          {search ? 'No images found' : 'Enter a search term to begin'}
+        </div>
+      )}
+    </div>
   );
+  
 }
 
 export default App;
