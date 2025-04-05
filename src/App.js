@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import { toast, ToastContainer, Zoom } from 'react-toastify';
 
 function App() {
   const API_URL = 'https://api.unsplash.com/search/photos';
@@ -28,7 +29,7 @@ function App() {
       fetchData();
     }
     else{
-      alert("search")
+      toast.error('d')
     }
   }
 
@@ -91,6 +92,19 @@ function App() {
           {search ? 'No images found' : 'Enter a search term to begin'}
         </div>
       )}
+      <ToastContainer
+        position="top-left"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Zoom}
+      />
     </div>
   );
   
