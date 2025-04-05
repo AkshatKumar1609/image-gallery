@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { toast, ToastContainer, Zoom } from 'react-toastify';
 
@@ -11,21 +11,22 @@ function App() {
   let [page,setPage] = useState(1)
   let [totalPages,setTotalPages] = useState(0)
 
-  function fetchData(){
+  const fetchData = useCallback(()=>{
     fetch( `${API_URL}?query=${search}&page=${page}&per_page=${IMAGES_PER_PAGE}&client_id=${process.env.REACT_APP_API_KEY}`)
     .then((res)=>res.json())
     .then((finalRes)=>{
       setImageData(finalRes.results)
       setTotalPages(finalRes.total_pages)
     })
-  }
+  }, [API_URL, IMAGES_PER_PAGE, page, search]
+)
 
   function functionToFetch(event){
     setImageData([])
     setTotalPages(0)
     setPage(1)
     event.preventDefault();
-    if (search != "") {
+    if (search !== "") {
       fetchData();
     }
     else{
@@ -33,11 +34,16 @@ function App() {
     }
   }
 
-  useEffect(()=>{
-    if (search != "") {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (page > 1 || search !== '')) {
+      setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
+    if (search !== "" && page > 0) {
       fetchData();
     }
-  },[page,search])
+  }, [page, search, fetchData]);
 
   return (
     <div className="container">
