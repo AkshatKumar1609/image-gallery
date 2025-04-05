@@ -24,14 +24,19 @@ function App() {
     setTotalPages(0)
     setPage(1)
     event.preventDefault();
-    fetchData()
+    if (search != "") {
+      fetchData();
+    }
+    else{
+      alert("search")
+    }
   }
 
   useEffect(()=>{
-    if (search) {
+    if (search != "") {
       fetchData();
     }
-  },[page])
+  },[page,search])
 
   return (
     <div className="container">
