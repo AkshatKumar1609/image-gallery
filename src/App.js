@@ -30,7 +30,7 @@ function App() {
       fetchData();
     }
     else{
-      toast.error('d')
+      toast.error('Enter something to search')
     }
   }
 
